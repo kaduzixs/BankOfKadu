@@ -74,7 +74,8 @@
       abaRegistro.classList.remove('ativa');
       painelLogin.classList.add('ativo');
       painelRegistro.classList.remove('ativo');
-    } else {
+    } 
+    else {
       indicador.classList.add('deslocado');
       abaRegistro.classList.add('ativa');
       abaLogin.classList.remove('ativa');
@@ -119,6 +120,7 @@
     else if(status === 401){
       setMsg(texto || 'Nome ou senha inválidos.');
     }
+    else 
     setMsg('Não foi possível entrar agora. Tente novamente.');
     
   }

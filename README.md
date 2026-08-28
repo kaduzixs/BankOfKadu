@@ -87,17 +87,12 @@ Tela única com duas abas alternáveis via JavaScript: **Entrar** (login) e **Ab
 4. Se a resposta for OK (200), mostra mensagem de sucesso e redireciona para `index.html`.
 5. Se for `401`, mostra a mensagem de erro vinda do back-end (ou uma padrão).
 
-> ⚠️ **Bug encontrado:** depois do bloco `else if(status === 401){...}`, existe um `setMsg('Não foi possível entrar agora. Tente novamente.')` fora do `else`, que **sempre executa** — inclusive em caso de sucesso, sobrescrevendo a mensagem de "login realizado". Precisa virar um `else` para só disparar quando a requisição falhar por outro motivo:
-> ```js
-> if(ok){
->   setMsg(texto, 'sucesso');
->   window.location.href = "index.html";
-> } else if(status === 401){
->   setMsg(texto || 'Nome ou senha inválidos.');
-> } else {
->   setMsg('Não foi possível entrar agora. Tente novamente.');
-> }
-> ```
+## Banco de dados
+<h1>Create bank of data</h1>
+<p>O banco de dados foi criado agora com todas as tabelas e integraçao com uma maquina interna
+do computador, nao esta funcionando normalmente com deploy por ser um banco de maquina pessoal.</p>
+<h1>Atualizaçoes necessarias!!</h1>
+<p>Se algum usuario ou se o propio dono do codigo quiser, pode trocar o banco de dados (MySQL) por PostGres.</p>
 
 ### Fluxo de Cadastro
 
