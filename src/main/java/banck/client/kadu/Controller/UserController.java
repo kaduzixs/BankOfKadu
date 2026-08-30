@@ -19,21 +19,24 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+
         Optional<User> usuario = userService.login(email, password);
 
         if (usuario.isPresent()) {
-            return ResponseEntity.ok("Login realized with success!!");
+            return ResponseEntity.ok("Login realizado com sucesso!");
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email or password invalid");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email ou senha inválidos");
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestParam String email, @RequestParam String password) {
-        boolean registered = userService.register(email, password);
 
+        boolean registered = userService.register(email, password);
         if (registered) {
-            return ResponseEntity.ok("User registered with success!!");
+            return ResponseEntity.ok("Usuário cadastrado com sucesso!");
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already registered");
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado");
     }
 }

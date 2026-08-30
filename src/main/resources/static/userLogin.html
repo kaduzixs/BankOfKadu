@@ -1,14 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kadu Bank — Acesso</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="user.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="user.css">
 </head>
+
 <body>
 
 <div class="cartao">
@@ -20,142 +25,359 @@
 
   <div class="abas">
     <div class="indicador-aba" id="indicadorAba"></div>
-    <button class="aba ativa" id="abaLogin" onclick="mudarAba('login')">Entrar</button>
-    <button class="aba" id="abaRegistro" onclick="mudarAba('registro')">Abrir conta</button>
+
+    <button class="aba ativa" id="abaLogin" onclick="mudarAba('login')">
+      Entrar
+    </button>
+
+    <button class="aba" id="abaRegistro" onclick="mudarAba('registro')">
+      Abrir conta
+    </button>
   </div>
 
-  <form class="painel ativo" id="painelLogin" onsubmit="return false;">
+
+  <!-- LOGIN -->
+  <form class="painel ativo" id="painelLogin" onsubmit="login(); return false;">
+
     <div class="campo">
-      <label for="loginUser">Email</label>
-      <input type="text" id="loginUser" autocomplete="username" placeholder="seu nome de usuário">
+      <label for="loginEmail">Email</label>
+
+      <input
+              type="email"
+              id="loginEmail"
+              autocomplete="username"
+              placeholder="seu@email.com"
+              required
+      >
     </div>
+
+
     <div class="campo">
-      <label for="loginPass">Senha</label>
-      <input type="password" id="loginPass" autocomplete="current-password" placeholder="••••••••">
+      <label for="loginPassword">Senha</label>
+
+      <input
+              type="password"
+              id="loginPassword"
+              autocomplete="current-password"
+              placeholder="••••••••"
+              required
+      >
     </div>
-    <button class="botao botao-primario" href="index.html" onclick="login()">Entrar na conta</button>
+
+
+    <button class="botao botao-primario" type="submit">
+      Entrar na conta
+    </button>
+
   </form>
 
-  <form class="painel" id="painelRegistro" onsubmit="return false;">
+
+  <!-- REGISTRO -->
+  <form class="painel" id="painelRegistro" onsubmit="registrar(); return false;">
+
     <div class="campo">
-      <label for="regUser">Email</label>
-      <input type="email" id="regUser" autocomplete="useremail" placeholder="email...">
+      <label for="regEmail">Email</label>
+
+      <input
+              type="email"
+              id="regEmail"
+              autocomplete="email"
+              placeholder="seu@email.com"
+              required
+      >
     </div>
+
+
     <div class="campo">
-      <label for="regPass">Senha</label>
-      <input type="password" id="regPass" autocomplete="new-password" placeholder="mínimo de 6 caracteres">
+      <label for="regPassword">Senha</label>
+
+      <input
+              type="password"
+              id="regPassword"
+              autocomplete="new-password"
+              placeholder="mínimo de 6 caracteres"
+              required
+      >
     </div>
+
+
     <div class="campo">
-      <label for="regPassConfirm">Confirmar senha</label>
-      <input type="password" id="regPassConfirm" autocomplete="new-password" placeholder="repita a senha">
+      <label for="regPasswordConfirm">Confirmar senha</label>
+
+      <input
+              type="password"
+              id="regPasswordConfirm"
+              autocomplete="new-password"
+              placeholder="repita a senha"
+              required
+      >
     </div>
-    <button href="index.html" class="botao botao-primario" onclick="registrar()">Abrir conta</button>
+
+
+    <button class="botao botao-primario" type="submit">
+      Abrir conta
+    </button>
+
   </form>
+
 
   <p id="msg" class="mensagem"></p>
 
 </div>
 
+
 <script>
+
   const API_BASE = '/api/user';
 
-  function mudarAba(aba){
+
+  function mudarAba(aba) {
+
     const indicador = document.getElementById('indicadorAba');
     const abaLogin = document.getElementById('abaLogin');
     const abaRegistro = document.getElementById('abaRegistro');
+
     const painelLogin = document.getElementById('painelLogin');
     const painelRegistro = document.getElementById('painelRegistro');
 
     setMsg('');
 
-    if(aba === 'login'){
+
+    if (aba === 'login') {
+
       indicador.classList.remove('deslocado');
+
       abaLogin.classList.add('ativa');
       abaRegistro.classList.remove('ativa');
+
       painelLogin.classList.add('ativo');
       painelRegistro.classList.remove('ativo');
-    } 
-    else {
+
+    } else {
+
       indicador.classList.add('deslocado');
+
       abaRegistro.classList.add('ativa');
       abaLogin.classList.remove('ativa');
+
       painelRegistro.classList.add('ativo');
       painelLogin.classList.remove('ativo');
     }
   }
 
-  function setMsg(texto, tipo){
+
+  function setMsg(texto, tipo) {
+
     const msg = document.getElementById('msg');
+
     msg.innerText = texto || '';
+
     msg.classList.remove('mensagem-sucesso');
-    if(tipo === 'sucesso') msg.classList.add('mensagem-sucesso');
+
+    if (tipo === 'sucesso') {
+      msg.classList.add('mensagem-sucesso');
+    }
   }
 
-  async function chamarApi(caminho, params){
+
+  async function chamarApi(caminho, params) {
+
     const body = new URLSearchParams(params);
+
     const res = await fetch(`${API_BASE}${caminho}`, {
+
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body
+
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+
+      body: body
     });
+
     const texto = await res.text();
-    return { ok: res.ok, status: res.status, texto };
+
+    return {
+      ok: res.ok,
+      status: res.status,
+      texto
+    };
   }
 
-  async function login(){
-    const userName = document.getElementById('loginUser').value.trim();
-    const userPassword = document.getElementById('loginPass').value;
 
-    if(!userName || !userPassword){
-      setMsg('Preencha nome e senha.');
+  /* =========================
+     LOGIN
+  ========================= */
+
+  async function login() {
+
+    const email = document
+            .getElementById('loginEmail')
+            .value
+            .trim();
+
+    const password = document
+            .getElementById('loginPassword')
+            .value;
+
+
+    if (!email || !password) {
+
+      setMsg('Preencha email e senha.');
+
       return;
     }
 
-    const { ok, status, texto } = await chamarApi('/login', { userName, userPassword });
 
-    if(ok){
-      setMsg(texto, 'sucesso');
-      window.location.href = "index.html";
-    } 
-    else if(status === 401){
-      setMsg(texto || 'Nome ou senha inválidos.');
+    try {
+
+      const { ok, status, texto } = await chamarApi(
+              '/login',
+              {
+                email: email,
+                password: password
+              }
+      );
+
+
+      if (ok) {
+
+        setMsg(texto, 'sucesso');
+
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 500);
+
+      }
+
+      else if (status === 401) {
+
+        setMsg(
+                texto || 'Email ou senha inválidos.'
+        );
+
+      }
+
+      else {
+
+        setMsg(
+                'Não foi possível entrar agora. Tente novamente.'
+        );
+      }
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      setMsg(
+              'Erro ao conectar com o servidor.'
+      );
     }
-    else 
-    setMsg('Não foi possível entrar agora. Tente novamente.');
-    
   }
 
-  async function registrar(){
-    const userName = document.getElementById('regUser').value.trim();
-    const userPassword = document.getElementById('regPass').value;
-    const confirmarSenha = document.getElementById('regPassConfirm').value;
 
-    if(!userName || !userPassword || !confirmarSenha){
+  /* =========================
+     REGISTRO
+  ========================= */
+
+  async function registrar() {
+
+    const email = document
+            .getElementById('regEmail')
+            .value
+            .trim();
+
+    const password = document
+            .getElementById('regPassword')
+            .value;
+
+    const confirmarSenha = document
+            .getElementById('regPasswordConfirm')
+            .value;
+
+
+    if (!email || !password || !confirmarSenha) {
+
       setMsg('Preencha todos os campos.');
-      return;
-    }
-    if(userPassword.length < 6){
-      setMsg('A senha precisa ter ao menos 6 caracteres.');
-      return;
-    }
-    if(userPassword !== confirmarSenha){
-      setMsg('As senhas não coincidem.');
+
       return;
     }
 
-    const { ok, status, texto } = await chamarApi('/register', { userName, userPassword });
 
-    if(ok){
-      setMsg(texto, 'sucesso');
-      document.getElementById('painelRegistro').reset();
-      setTimeout(() => mudarAba('login'), 900);
-    } else if(status === 409){
-      setMsg(texto || 'Esse nome já está em uso.');
-    } else {
-      setMsg('Não foi possível cadastrar agora. Tente novamente.');
+    if (password.length < 6) {
+
+      setMsg(
+              'A senha precisa ter ao menos 6 caracteres.'
+      );
+
+      return;
+    }
+
+
+    if (password !== confirmarSenha) {
+
+      setMsg(
+              'As senhas não coincidem.'
+      );
+
+      return;
+    }
+
+
+    try {
+
+      const { ok, status, texto } = await chamarApi('/register',{
+                email: email,
+                password: password
+              }
+      );
+
+
+      if (ok) {
+
+        setMsg(
+                texto,
+                'sucesso'
+        );
+
+        document
+                .getElementById('painelRegistro')
+                .reset();
+
+
+        setTimeout(() => {
+          mudarAba('login');
+        }, 900);
+
+      }
+
+      else if (status === 409) {
+
+        setMsg(
+                texto || 'Esse email já está cadastrado.'
+        );
+
+      }
+
+      else {
+
+        setMsg(
+                'Não foi possível cadastrar agora. Tente novamente.'
+        );
+      }
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      setMsg(
+              'Erro ao conectar com o servidor.'
+      );
     }
   }
+
 </script>
 
 </body>
 </html>
+```
