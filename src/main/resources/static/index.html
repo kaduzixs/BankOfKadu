@@ -11,19 +11,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet">
+            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet">
 
     <style>
         :root {
-            --laranja: #FF7A00;
-            --laranja-escuro: #E65F00;
+            --verde: #37C871;
+            --verde-escuro: #229954;
             --fundo: #121210;
             --superficie: #1C1C19;
             --superficie-alta: #242420;
             --texto: #F4F1EA;
             --texto-mudo: #9B9890;
-            --verde: #37C871;
             --vermelho: #FF5C5C;
             --borda: #33322D;
         }
@@ -38,16 +37,16 @@
             min-height: 100vh;
             background: var(--fundo);
             background-image:
-                radial-gradient(
-                    circle at 15% 0%,
-                    rgba(255, 122, 0, 0.10),
-                    transparent 45%
-                ),
-                radial-gradient(
-                    circle at 100% 100%,
-                    rgba(255, 122, 0, 0.06),
-                    transparent 40%
-                );
+                    radial-gradient(
+                            circle at 15% 0%,
+                            rgba(55, 200, 113, 0.10),
+                            transparent 45%
+                    ),
+                    radial-gradient(
+                            circle at 100% 100%,
+                            rgba(55, 200, 113, 0.06),
+                            transparent 40%
+                    );
             font-family: 'Inter', sans-serif;
             color: var(--texto);
         }
@@ -62,7 +61,7 @@
         }
 
         *:focus-visible {
-            outline: 2px solid var(--laranja);
+            outline: 2px solid var(--verde);
             outline-offset: 2px;
         }
 
@@ -89,9 +88,9 @@
             align-items: center;
             justify-content: center;
             background: linear-gradient(
-                135deg,
-                var(--laranja),
-                var(--laranja-escuro)
+                    135deg,
+                    var(--verde),
+                    var(--verde-escuro)
             );
             color: white;
             border-radius: 10px;
@@ -219,9 +218,9 @@
         .botao-depositar {
             border: none;
             background: linear-gradient(
-                135deg,
-                var(--laranja),
-                var(--laranja-escuro)
+                    135deg,
+                    var(--verde),
+                    var(--verde-escuro)
             );
             color: #14140F;
         }
@@ -322,7 +321,7 @@
         }
 
         .campo:focus-within {
-            border-color: var(--laranja);
+            border-color: var(--verde);
         }
 
         .campo label {
@@ -364,9 +363,9 @@
         .botao-confirmar {
             border: none;
             background: linear-gradient(
-                135deg,
-                var(--laranja),
-                var(--laranja-escuro)
+                    135deg,
+                    var(--verde),
+                    var(--verde-escuro)
             );
             color: #14140F;
         }
@@ -443,8 +442,8 @@
         <span id="emailUsuario">Carregando...</span>
 
         <button
-            class="botao-sair"
-            onclick="logout()">
+                class="botao-sair"
+                onclick="logout()">
             Sair
         </button>
     </div>
@@ -453,19 +452,19 @@
 <main>
 
     <div
-        id="mensagemErro"
-        class="erro">
+            id="mensagemErro"
+            class="erro">
     </div>
 
     <div
-        id="carregando"
-        class="carregando">
+            id="carregando"
+            class="carregando">
         Carregando sua conta...
     </div>
 
     <div
-        id="conteudo"
-        style="display: none;">
+            id="conteudo"
+            style="display: none;">
 
         <div class="boas-vindas">
             <h2>
@@ -486,8 +485,8 @@
                 </div>
 
                 <div
-                    class="saldo"
-                    id="saldo">
+                        class="saldo"
+                        id="saldo">
                     R$ 0,00
                 </div>
 
@@ -502,14 +501,14 @@
                 <div class="acoes">
 
                     <button
-                        class="botao-acao botao-depositar"
-                        onclick="abrirModal('depositar')">
+                            class="botao-acao botao-depositar"
+                            onclick="abrirModal('depositar')">
                         Depositar
                     </button>
 
                     <button
-                        class="botao-acao botao-sacar"
-                        onclick="abrirModal('sacar')">
+                            class="botao-acao botao-sacar"
+                            onclick="abrirModal('sacar')">
                         Sacar
                     </button>
 
@@ -529,8 +528,8 @@
                     </span>
 
                     <span
-                        class="info-valor"
-                        id="emailConta">
+                            class="info-valor"
+                            id="emailConta">
                         -
                     </span>
                 </div>
@@ -541,8 +540,8 @@
                     </span>
 
                     <span
-                        class="info-valor"
-                        id="idConta">
+                            class="info-valor"
+                            id="idConta">
                         -
                     </span>
                 </div>
@@ -553,8 +552,8 @@
                     </span>
 
                     <span
-                        class="info-valor"
-                        id="idUsuario">
+                            class="info-valor"
+                            id="idUsuario">
                         -
                     </span>
                 </div>
@@ -566,8 +565,8 @@
 </main>
 
 <div
-    id="modal"
-    class="modal">
+        id="modal"
+        class="modal">
 
     <div class="modal-conteudo">
 
@@ -586,33 +585,33 @@
             </label>
 
             <input
-                id="valorOperacao"
-                type="number"
-                min="0.01"
-                step="0.01"
-                placeholder="0,00">
+                    id="valorOperacao"
+                    type="number"
+                    min="0.01"
+                    step="0.01"
+                    placeholder="0,00">
 
         </div>
 
         <div class="botoes-modal">
 
             <button
-                class="botao-modal botao-cancelar"
-                onclick="fecharModal()">
+                    class="botao-modal botao-cancelar"
+                    onclick="fecharModal()">
                 Cancelar
             </button>
 
             <button
-                class="botao-modal botao-confirmar"
-                onclick="realizarOperacao()">
+                    class="botao-modal botao-confirmar"
+                    onclick="realizarOperacao()">
                 Confirmar
             </button>
 
         </div>
 
         <div
-            id="mensagemOperacao"
-            class="mensagem">
+                id="mensagemOperacao"
+                class="mensagem">
         </div>
 
     </div>
