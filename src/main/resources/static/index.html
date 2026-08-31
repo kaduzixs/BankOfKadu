@@ -1,602 +1,868 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Kadu Bank</title>
+    <title>Kadu Bank</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
-          rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
 
-  <style>
+    <style>
+        :root {
+            --laranja: #FF7A00;
+            --laranja-escuro: #E65F00;
+            --fundo: #121210;
+            --superficie: #1C1C19;
+            --superficie-alta: #242420;
+            --texto: #F4F1EA;
+            --texto-mudo: #9B9890;
+            --verde: #37C871;
+            --vermelho: #FF5C5C;
+            --borda: #33322D;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      min-height: 100vh;
-      background: #f5f7fa;
-      font-family: 'Inter', sans-serif;
-      color: #111827;
-    }
+        body {
+            min-height: 100vh;
+            background: var(--fundo);
+            background-image:
+                radial-gradient(
+                    circle at 15% 0%,
+                    rgba(255, 122, 0, 0.10),
+                    transparent 45%
+                ),
+                radial-gradient(
+                    circle at 100% 100%,
+                    rgba(255, 122, 0, 0.06),
+                    transparent 40%
+                );
+            font-family: 'Inter', sans-serif;
+            color: var(--texto);
+        }
 
-    header {
-      width: 100%;
-      background: #111827;
-      color: white;
-      padding: 18px 40px;
+        button,
+        input {
+            font-family: inherit;
+        }
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+        button {
+            cursor: pointer;
+        }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        *:focus-visible {
+            outline: 2px solid var(--laranja);
+            outline-offset: 2px;
+        }
 
-    .logo-kb {
-      width: 42px;
-      height: 42px;
+        header {
+            width: 100%;
+            background: var(--superficie);
+            border-bottom: 1px solid var(--borda);
+            padding: 18px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-      background: white;
-      color: #111827;
+        .logo-kb {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(
+                135deg,
+                var(--laranja),
+                var(--laranja-escuro)
+            );
+            color: white;
+            border-radius: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+        }
 
-      border-radius: 10px;
+        .logo h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            color: var(--texto);
+        }
 
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 18px;
-    }
+        .usuario-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
 
-    .logo h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px;
-    }
+        #emailUsuario {
+            font-size: 14px;
+            color: var(--texto-mudo);
+        }
 
-    .usuario-area {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
+        .botao-sair {
+            border: 1px solid var(--borda);
+            background: var(--superficie-alta);
+            color: var(--texto);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
 
-    #emailUsuario {
-      font-size: 14px;
-      color: #d1d5db;
-    }
+        .botao-sair:hover {
+            background: var(--vermelho);
+            border-color: var(--vermelho);
+            color: white;
+        }
 
-    .botao-sair {
-      border: none;
-      background: #ef4444;
-      color: white;
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
-      padding: 10px 16px;
-      border-radius: 8px;
+        .boas-vindas {
+            margin-bottom: 30px;
+        }
 
-      font-weight: 600;
-      cursor: pointer;
+        .boas-vindas h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
 
-      transition: 0.2s;
-    }
+        .boas-vindas p {
+            color: var(--texto-mudo);
+        }
 
-    .botao-sair:hover {
-      background: #dc2626;
-    }
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 22px;
+        }
 
-    main {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+        .cartao {
+            background: var(--superficie);
+            border: 1px solid var(--borda);
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
 
-    .boas-vindas {
-      margin-bottom: 30px;
-    }
+        .titulo-cartao {
+            font-size: 14px;
+            color: var(--texto-mudo);
+            margin-bottom: 15px;
+        }
 
-    .boas-vindas h2 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 30px;
-      margin-bottom: 8px;
-    }
+        .saldo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+        }
 
-    .boas-vindas p {
-      color: #6b7280;
-    }
+        .numero-conta {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--borda);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 22px;
-    }
+        .numero-conta span:first-child {
+            color: var(--texto-mudo);
+            font-size: 13px;
+        }
 
-    .cartao {
-      background: white;
-      border-radius: 18px;
-      padding: 28px;
+        #numeroConta {
+            font-weight: 600;
+        }
 
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
-    }
+        .acoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
 
-    .cartao-saldo {
-      background: #111827;
-      color: white;
-    }
+        .botao-acao {
+            border-radius: 12px;
+            padding: 14px 10px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: transform 0.08s ease, filter 0.15s ease;
+        }
 
-    .titulo-cartao {
-      font-size: 14px;
-      color: #9ca3af;
-      margin-bottom: 15px;
-    }
+        .botao-acao:active {
+            transform: scale(0.98);
+        }
 
-    .cartao-saldo .titulo-cartao {
-      color: #d1d5db;
-    }
+        .botao-depositar {
+            border: none;
+            background: linear-gradient(
+                135deg,
+                var(--laranja),
+                var(--laranja-escuro)
+            );
+            color: #14140F;
+        }
 
-    .saldo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 42px;
-      font-weight: 700;
-    }
+        .botao-sacar {
+            background: var(--superficie-alta);
+            color: var(--texto);
+            border: 1px solid var(--borda);
+        }
 
-    .numero-conta {
-      margin-top: 25px;
-      padding-top: 20px;
+        .botao-acao:hover {
+            filter: brightness(1.08);
+        }
 
-      border-top: 1px solid #374151;
+        .informacoes h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 20px;
+        }
 
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        .info {
+            margin-bottom: 18px;
+        }
 
-    .numero-conta span:first-child {
-      color: #9ca3af;
-      font-size: 13px;
-    }
+        .info-label {
+            display: block;
+            font-size: 12px;
+            color: var(--texto-mudo);
+            margin-bottom: 5px;
+        }
 
-    #numeroConta {
-      font-weight: 600;
-    }
+        .info-valor {
+            font-weight: 600;
+            word-break: break-word;
+        }
 
-    .informacoes h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      margin-bottom: 20px;
-    }
+        .carregando {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--texto-mudo);
+        }
 
-    .info {
-      margin-bottom: 18px;
-    }
+        .erro {
+            background: rgba(255, 92, 92, 0.10);
+            border: 1px solid rgba(255, 92, 92, 0.30);
+            color: var(--vermelho);
+            padding: 15px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
 
-    .info-label {
-      display: block;
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 5px;
-    }
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.70);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+        }
 
-    .info-valor {
-      font-weight: 600;
-      word-break: break-word;
-    }
+        .modal.ativo {
+            display: flex;
+        }
 
-    .carregando {
-      text-align: center;
-      padding: 60px 20px;
-      color: #6b7280;
-    }
+        .modal-conteudo {
+            width: 100%;
+            max-width: 400px;
+            background: var(--superficie);
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            padding: 26px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
 
-    .erro {
-      background: #fee2e2;
-      color: #991b1b;
+        .modal-conteudo h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 22px;
+            margin-bottom: 6px;
+        }
 
-      padding: 15px 18px;
-      border-radius: 10px;
+        .modal-conteudo p {
+            color: var(--texto-mudo);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
 
-      margin-bottom: 20px;
+        .campo {
+            display: flex;
+            flex-direction: column;
+            background: var(--superficie-alta);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 8px 14px;
+            margin-bottom: 12px;
+            transition: border-color 0.15s ease;
+        }
 
-      display: none;
-    }
+        .campo:focus-within {
+            border-color: var(--laranja);
+        }
 
-    @media (max-width: 700px) {
+        .campo label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--texto-mudo);
+            font-weight: 600;
+        }
 
-      header {
-        padding: 15px 20px;
-      }
+        .campo input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--texto);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 5px 0;
+        }
 
-      .usuario-area {
-        gap: 8px;
-      }
+        .campo input::placeholder {
+            color: var(--texto-mudo);
+        }
 
-      #emailUsuario {
-        display: none;
-      }
+        .botoes-modal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
 
-      main {
-        margin-top: 25px;
-      }
+        .botao-modal {
+            border-radius: 10px;
+            padding: 13px;
+            font-weight: 600;
+        }
 
-      .grid {
-        grid-template-columns: 1fr;
-      }
+        .botao-confirmar {
+            border: none;
+            background: linear-gradient(
+                135deg,
+                var(--laranja),
+                var(--laranja-escuro)
+            );
+            color: #14140F;
+        }
 
-      .boas-vindas h2 {
-        font-size: 25px;
-      }
+        .botao-cancelar {
+            background: var(--superficie-alta);
+            border: 1px solid var(--borda);
+            color: var(--texto);
+        }
 
-      .saldo {
-        font-size: 34px;
-      }
-    }
+        .mensagem {
+            min-height: 18px;
+            font-size: 13px;
+            text-align: center;
+            margin-top: 14px;
+            color: var(--vermelho);
+        }
 
-  </style>
+        .mensagem-sucesso {
+            color: var(--verde);
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .usuario-area {
+                gap: 8px;
+            }
+
+            #emailUsuario {
+                display: none;
+            }
+
+            main {
+                margin-top: 25px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .boas-vindas h2 {
+                font-size: 25px;
+            }
+
+            .saldo {
+                font-size: 34px;
+            }
+        }
+
+        @media (max-width: 440px) {
+            .acoes {
+                grid-template-columns: 1fr;
+            }
+
+            .cartao {
+                padding: 24px 20px 28px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <header>
-
-  <div class="logo">
-
-    <div class="logo-kb">
-      KB
+    <div class="logo">
+        <div class="logo-kb">KB</div>
+        <h1>KADU BANK</h1>
     </div>
 
-    <h1>
-      KADU BANK
-    </h1>
+    <div class="usuario-area">
+        <span id="emailUsuario">Carregando...</span>
 
-  </div>
-
-
-  <div class="usuario-area">
-
-        <span id="emailUsuario">
-            Carregando...
-        </span>
-
-    <button
+        <button
             class="botao-sair"
             onclick="logout()">
-      Sair
-    </button>
-
-  </div>
-
+            Sair
+        </button>
+    </div>
 </header>
-
 
 <main>
 
-  <div
-          id="mensagemErro"
-          class="erro">
-  </div>
-
-
-  <div
-          id="carregando"
-          class="carregando">
-
-    Carregando sua conta...
-
-  </div>
-
-
-  <div id="conteudo" style="display: none;">
-
-    <div class="boas-vindas">
-
-      <h2>
-        Olá, <span id="nomeUsuario">usuário</span>!
-      </h2>
-
-      <p>
-        Bem-vindo ao Kadu Bank.
-      </p>
-
+    <div
+        id="mensagemErro"
+        class="erro">
     </div>
 
+    <div
+        id="carregando"
+        class="carregando">
+        Carregando sua conta...
+    </div>
 
-    <div class="grid">
+    <div
+        id="conteudo"
+        style="display: none;">
 
+        <div class="boas-vindas">
+            <h2>
+                Olá, <span id="nomeUsuario">usuário</span>!
+            </h2>
 
-      <!-- SALDO -->
-
-      <div class="cartao cartao-saldo">
-
-        <div class="titulo-cartao">
-          SALDO DISPONÍVEL
+            <p>
+                Bem-vindo ao Kadu Bank.
+            </p>
         </div>
 
-        <div
-                class="saldo"
-                id="saldo">
+        <div class="grid">
 
-          R$ 0,00
+            <div class="cartao">
 
-        </div>
+                <div class="titulo-cartao">
+                    SALDO DISPONÍVEL
+                </div>
 
+                <div
+                    class="saldo"
+                    id="saldo">
+                    R$ 0,00
+                </div>
 
-        <div class="numero-conta">
+                <div class="numero-conta">
+                    <span>Número da conta</span>
 
-                    <span>
-                        Número da conta
-                    </span>
-
-          <span id="numeroConta">
+                    <span id="numeroConta">
                         -
                     </span>
+                </div>
 
-        </div>
+                <div class="acoes">
 
-      </div>
+                    <button
+                        class="botao-acao botao-depositar"
+                        onclick="abrirModal('depositar')">
+                        Depositar
+                    </button>
 
+                    <button
+                        class="botao-acao botao-sacar"
+                        onclick="abrirModal('sacar')">
+                        Sacar
+                    </button>
 
-      <!-- INFORMAÇÕES -->
+                </div>
 
-      <div class="cartao informacoes">
+            </div>
 
-        <h3>
-          Minha conta
-        </h3>
+            <div class="cartao informacoes">
 
+                <h3>
+                    Minha conta
+                </h3>
 
-        <div class="info">
-
+                <div class="info">
                     <span class="info-label">
                         Email
                     </span>
 
-          <span
-                  class="info-valor"
-                  id="emailConta">
-
+                    <span
+                        class="info-valor"
+                        id="emailConta">
                         -
-
                     </span>
+                </div>
 
-        </div>
-
-
-        <div class="info">
-
+                <div class="info">
                     <span class="info-label">
                         ID da conta
                     </span>
 
-          <span
-                  class="info-valor"
-                  id="idConta">
-
+                    <span
+                        class="info-valor"
+                        id="idConta">
                         -
-
                     </span>
+                </div>
+
+                <div class="info">
+                    <span class="info-label">
+                        ID do usuário
+                    </span>
+
+                    <span
+                        class="info-valor"
+                        id="idUsuario">
+                        -
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<div
+    id="modal"
+    class="modal">
+
+    <div class="modal-conteudo">
+
+        <h3 id="modalTitulo">
+            Depositar dinheiro
+        </h3>
+
+        <p id="modalDescricao">
+            Informe o valor que deseja depositar.
+        </p>
+
+        <div class="campo">
+
+            <label for="valorOperacao">
+                Valor
+            </label>
+
+            <input
+                id="valorOperacao"
+                type="number"
+                min="0.01"
+                step="0.01"
+                placeholder="0,00">
 
         </div>
 
-      </div>
+        <div class="botoes-modal">
+
+            <button
+                class="botao-modal botao-cancelar"
+                onclick="fecharModal()">
+                Cancelar
+            </button>
+
+            <button
+                class="botao-modal botao-confirmar"
+                onclick="realizarOperacao()">
+                Confirmar
+            </button>
+
+        </div>
+
+        <div
+            id="mensagemOperacao"
+            class="mensagem">
+        </div>
 
     </div>
-
-  </div>
-
-</main>
-
+</div>
 
 <script>
+    let contaAtual = null;
+    let operacaoAtual = null;
 
-  /*
-   * =====================================================
-   * CARREGAR CONTA DO USUÁRIO LOGADO
-   * =====================================================
-   */
+    async function carregarConta() {
+        const carregando = document.getElementById('carregando');
+        const conteudo = document.getElementById('conteudo');
+        const mensagemErro = document.getElementById('mensagemErro');
 
-  async function carregarConta() {
+        try {
+            const resposta = await fetch('/api/account/me');
 
-    const carregando =
-            document.getElementById('carregando');
+            if (resposta.status === 401) {
+                window.location.href = 'userLogin.html';
+                return;
+            }
 
-    const conteudo =
-            document.getElementById('conteudo');
+            if (!resposta.ok) {
+                throw new Error(await resposta.text());
+            }
 
-    const mensagemErro =
-            document.getElementById('mensagemErro');
+            const conta = await resposta.json();
 
+            contaAtual = conta;
 
-    try {
+            document.getElementById('numeroConta').innerText =
+                conta.accountNumber ?? '-';
 
-      const resposta =
-              await fetch('/api/account/me');
+            document.getElementById('idConta').innerText =
+                conta.id ?? '-';
 
+            document.getElementById('saldo').innerText =
+                formatarMoeda(conta.balance);
 
-      /*
-       * Usuário não está logado
-       */
+            if (conta.user) {
+                const email = conta.user.email ?? '-';
 
-      if (resposta.status === 401) {
+                document.getElementById('emailUsuario').innerText =
+                    email;
 
-        window.location.href = 'userLogin.html';
+                document.getElementById('emailConta').innerText =
+                    email;
 
-        return;
-      }
+                document.getElementById('idUsuario').innerText =
+                    conta.user.id ?? '-';
 
+                document.getElementById('nomeUsuario').innerText =
+                    email.split('@')[0];
+            }
 
-      /*
-       * Outro erro
-       */
+            carregando.style.display = 'none';
+            conteudo.style.display = 'block';
 
-      if (!resposta.ok) {
+        } catch (erro) {
+            console.error(erro);
 
-        const texto =
-                await resposta.text();
+            carregando.style.display = 'none';
+            mensagemErro.style.display = 'block';
 
-        throw new Error(texto);
-      }
-
-
-      /*
-       * Converte a resposta para JSON
-       */
-
-      const conta =
-              await resposta.json();
-
-
-      console.log('Conta recebida:', conta);
-
-
-      /*
-       * =============================================
-       * DADOS DA CONTA
-       * =============================================
-       */
-
-      const numeroConta =
-              conta.accountNumber;
-
-      const saldo =
-              conta.balance;
-
-
-      /*
-       * =============================================
-       * MOSTRA OS DADOS
-       * =============================================
-       */
-
-      document.getElementById('numeroConta')
-              .innerText = numeroConta;
-
-
-      document.getElementById('idConta')
-              .innerText = conta.id;
-
-
-      document.getElementById('saldo')
-              .innerText =
-              formatarMoeda(saldo);
-
-
-      if (conta.user) {
-
-        const email =
-                conta.user.email;
-
-        document.getElementById('emailUsuario')
-                .innerText = email;
-
-        document.getElementById('emailConta')
-                .innerText = email;
-
-
-        const nome =
-                email.split('@')[0];
-
-        document.getElementById('nomeUsuario')
-                .innerText = nome;
-      }
-
-
-      carregando.style.display = 'none';
-
-      conteudo.style.display = 'block';
-
-
-    } catch (erro) {
-
-      console.error(
-              'Erro ao carregar conta:',
-              erro
-      );
-
-
-      carregando.style.display = 'none';
-
-      mensagemErro.style.display = 'block';
-
-      mensagemErro.innerText =
-              'Não foi possível carregar sua conta. Tente novamente.';
+            mensagemErro.innerText =
+                'Não foi possível carregar sua conta. Tente novamente.';
+        }
     }
 
-  }
-
-  function formatarMoeda(valor) {
-
-    return Number(valor).toLocaleString(
+    function formatarMoeda(valor) {
+        return Number(valor || 0).toLocaleString(
             'pt-BR',
             {
-              style: 'currency',
-              currency: 'BRL'
+                style: 'currency',
+                currency: 'BRL'
             }
-    );
-
-  }
-
-
-
-  async function logout() {
-
-    try {
-
-      const resposta =
-              await fetch(
-                      '/api/user/logout',
-                      {
-                        method: 'POST'
-                      }
-              );
-
-
-      if (resposta.ok) {
-
-        window.location.href =
-                'userLogin.html';
-
-        return;
-      }
-
-
-      alert(
-              'Não foi possível sair da conta.'
-      );
-
-
-    } catch (erro) {
-
-      console.error(
-              'Erro ao fazer logout:',
-              erro
-      );
-
-      alert(
-              'Erro ao conectar com o servidor.'
-      );
+        );
     }
 
-  }
+    function abrirModal(tipo) {
+        operacaoAtual = tipo;
 
+        const modal = document.getElementById('modal');
+        const titulo = document.getElementById('modalTitulo');
+        const descricao = document.getElementById('modalDescricao');
+        const mensagem = document.getElementById('mensagemOperacao');
+        const campo = document.getElementById('valorOperacao');
 
-  carregarConta();
+        campo.value = '';
+        mensagem.innerText = '';
+        mensagem.className = 'mensagem';
 
+        if (tipo === 'depositar') {
+            titulo.innerText = 'Depositar dinheiro';
+            descricao.innerText =
+                'Informe o valor que deseja depositar.';
+        } else {
+            titulo.innerText = 'Sacar dinheiro';
+            descricao.innerText =
+                'Informe o valor que deseja sacar.';
+        }
+
+        modal.classList.add('ativo');
+
+        setTimeout(() => {
+            campo.focus();
+        }, 100);
+    }
+
+    function fecharModal() {
+        document
+            .getElementById('modal')
+            .classList.remove('ativo');
+
+        operacaoAtual = null;
+    }
+
+    async function realizarOperacao() {
+        const campo = document.getElementById('valorOperacao');
+        const mensagem = document.getElementById('mensagemOperacao');
+
+        const valor = Number(campo.value);
+
+        if (!valor || valor <= 0) {
+            mensagem.className = 'mensagem';
+            mensagem.innerText = 'Digite um valor válido.';
+            return;
+        }
+
+        if (
+            !contaAtual ||
+            !contaAtual.user ||
+            !contaAtual.user.id
+        ) {
+            mensagem.className = 'mensagem';
+            mensagem.innerText =
+                'Não foi possível identificar o usuário.';
+            return;
+        }
+
+        const userId = contaAtual.user.id;
+
+        const endpoint =
+            operacaoAtual === 'depositar'
+                ? `/api/conta/depositar/${userId}`
+                : `/api/conta/sacar/${userId}`;
+
+        try {
+            mensagem.className = 'mensagem';
+            mensagem.innerText = 'Processando...';
+
+            const resposta = await fetch(
+                endpoint,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        valor: valor
+                    })
+                }
+            );
+
+            if (!resposta.ok) {
+                const erro = await resposta.text();
+
+                mensagem.className = 'mensagem';
+                mensagem.innerText =
+                    erro || 'Não foi possível realizar a operação.';
+
+                return;
+            }
+
+            const novoSaldo = await resposta.json();
+
+            contaAtual.balance = novoSaldo;
+
+            document.getElementById('saldo').innerText =
+                formatarMoeda(novoSaldo);
+
+            mensagem.className =
+                'mensagem mensagem-sucesso';
+
+            mensagem.innerText =
+                operacaoAtual === 'depositar'
+                    ? 'Depósito realizado com sucesso!'
+                    : 'Saque realizado com sucesso!';
+
+            setTimeout(fecharModal, 1000);
+
+        } catch (erro) {
+            console.error(erro);
+
+            mensagem.className = 'mensagem';
+            mensagem.innerText =
+                'Erro ao conectar com o servidor.';
+        }
+    }
+
+    document
+        .getElementById('modal')
+        .addEventListener('click', function (event) {
+            if (event.target === this) {
+                fecharModal();
+            }
+        });
+
+    document
+        .getElementById('valorOperacao')
+        .addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                realizarOperacao();
+            }
+
+            if (event.key === 'Escape') {
+                fecharModal();
+            }
+        });
+
+    async function logout() {
+        try {
+            const resposta = await fetch(
+                '/api/user/logout',
+                {
+                    method: 'POST'
+                }
+            );
+
+            if (resposta.ok) {
+                window.location.href = 'userLogin.html';
+                return;
+            }
+
+            alert(
+                'Não foi possível sair da conta.'
+            );
+
+        } catch (erro) {
+            console.error(erro);
+
+            alert(
+                'Erro ao conectar com o servidor.'
+            );
+        }
+    }
+
+    carregarConta();
 </script>
 
 </body>
-
 </html>
 
