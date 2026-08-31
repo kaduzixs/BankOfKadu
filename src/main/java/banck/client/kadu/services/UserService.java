@@ -1,5 +1,7 @@
 package banck.client.kadu.services;
 
+import banck.client.kadu.Repository.AccountRepository;
+import banck.client.kadu.Repository.Accounts;
 import banck.client.kadu.Repository.User;
 import banck.client.kadu.Repository.UserRepository;
 
@@ -14,11 +16,25 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     public boolean register(String email, String password) {
+
         if (userRepository.findByEmail(email).isPresent()) {
             return false; // já existe
         }
-        userRepository.save(new User(email, password));
+
+        User usuarioSalvo = userRepository.save(new User(email, password));
+
+        String accountNumber = String.valueOf(usuarioSalvo.getId());
+
+        Accounts conta = new Accounts(accountNumber, 0.0);
+
+        conta.setUser(usuarioSalvo);
+
+        accountRepository.save(conta);
+
         return true;
     }
 

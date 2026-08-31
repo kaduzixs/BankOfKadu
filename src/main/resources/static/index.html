@@ -1,129 +1,602 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Banco do Inter</title>
+
+  <title>Kadu Bank</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="banco.css">
+
+  <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+          rel="stylesheet">
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7fa;
+      font-family: 'Inter', sans-serif;
+      color: #111827;
+    }
+
+    header {
+      width: 100%;
+      background: #111827;
+      color: white;
+      padding: 18px 40px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-kb {
+      width: 42px;
+      height: 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: white;
+      color: #111827;
+
+      border-radius: 10px;
+
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .logo h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+    }
+
+    .usuario-area {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    #emailUsuario {
+      font-size: 14px;
+      color: #d1d5db;
+    }
+
+    .botao-sair {
+      border: none;
+      background: #ef4444;
+      color: white;
+
+      padding: 10px 16px;
+      border-radius: 8px;
+
+      font-weight: 600;
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+    .botao-sair:hover {
+      background: #dc2626;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .boas-vindas {
+      margin-bottom: 30px;
+    }
+
+    .boas-vindas h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .boas-vindas p {
+      color: #6b7280;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 22px;
+    }
+
+    .cartao {
+      background: white;
+      border-radius: 18px;
+      padding: 28px;
+
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+    }
+
+    .cartao-saldo {
+      background: #111827;
+      color: white;
+    }
+
+    .titulo-cartao {
+      font-size: 14px;
+      color: #9ca3af;
+      margin-bottom: 15px;
+    }
+
+    .cartao-saldo .titulo-cartao {
+      color: #d1d5db;
+    }
+
+    .saldo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 42px;
+      font-weight: 700;
+    }
+
+    .numero-conta {
+      margin-top: 25px;
+      padding-top: 20px;
+
+      border-top: 1px solid #374151;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .numero-conta span:first-child {
+      color: #9ca3af;
+      font-size: 13px;
+    }
+
+    #numeroConta {
+      font-weight: 600;
+    }
+
+    .informacoes h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .info {
+      margin-bottom: 18px;
+    }
+
+    .info-label {
+      display: block;
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 5px;
+    }
+
+    .info-valor {
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .carregando {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+
+    .erro {
+      background: #fee2e2;
+      color: #991b1b;
+
+      padding: 15px 18px;
+      border-radius: 10px;
+
+      margin-bottom: 20px;
+
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        padding: 15px 20px;
+      }
+
+      .usuario-area {
+        gap: 8px;
+      }
+
+      #emailUsuario {
+        display: none;
+      }
+
+      main {
+        margin-top: 25px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .boas-vindas h2 {
+        font-size: 25px;
+      }
+
+      .saldo {
+        font-size: 34px;
+      }
+    }
+
+  </style>
 </head>
+
 <body>
 
-<div class="cartao">
-  <button class="back-btn" id="back">
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 12H5"/>
-      <path d="M12 19l-7-7 7-7"/>
-    </svg>
-  </button>
+<header>
 
-  <div class="topo">
-    <div class="logo">Inter</div>
-    <h1>BANCO DO INTER</h1>
-  </div>
+  <div class="logo">
 
-  <div class="bloco-saldo">
-    <p class="rotulo-saldo">Saldo disponível</p>
-    <p class="valor-saldo" id="saldoWrap"><span>R$</span> <span id="saldo">0,00</span></p>
-  </div>
-
-  <div class="abas">
-    <div class="indicador-aba" id="indicadorAba"></div>
-    <button class="aba ativa" id="abaDepositar" onclick="mudarAba('depositar')">Depositar</button>
-    <button class="aba" id="abaSacar" onclick="mudarAba('sacar')">Sacar</button>
-  </div>
-
-  <div class="painel ativo" id="painelDepositar">
-    <div class="campo">
-      <span>R$</span>
-      <input type="number" id="valorDeposito" placeholder="0,00" inputmode="decimal">
+    <div class="logo-kb">
+      KB
     </div>
-    <button class="botao botao-primario" onclick="depositar()">Confirmar depósito</button>
+
+    <h1>
+      KADU BANK
+    </h1>
+
   </div>
 
-  <div class="painel" id="painelSacar">
-    <div class="campo">
-      <span>R$</span>
-      <input type="number" id="valorSaque" placeholder="0,00" inputmode="decimal">
+
+  <div class="usuario-area">
+
+        <span id="emailUsuario">
+            Carregando...
+        </span>
+
+    <button
+            class="botao-sair"
+            onclick="logout()">
+      Sair
+    </button>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <div
+          id="mensagemErro"
+          class="erro">
+  </div>
+
+
+  <div
+          id="carregando"
+          class="carregando">
+
+    Carregando sua conta...
+
+  </div>
+
+
+  <div id="conteudo" style="display: none;">
+
+    <div class="boas-vindas">
+
+      <h2>
+        Olá, <span id="nomeUsuario">usuário</span>!
+      </h2>
+
+      <p>
+        Bem-vindo ao Kadu Bank.
+      </p>
+
     </div>
-    <button class="botao botao-primario" onclick="sacar()">Confirmar saque</button>
+
+
+    <div class="grid">
+
+
+      <!-- SALDO -->
+
+      <div class="cartao cartao-saldo">
+
+        <div class="titulo-cartao">
+          SALDO DISPONÍVEL
+        </div>
+
+        <div
+                class="saldo"
+                id="saldo">
+
+          R$ 0,00
+
+        </div>
+
+
+        <div class="numero-conta">
+
+                    <span>
+                        Número da conta
+                    </span>
+
+          <span id="numeroConta">
+                        -
+                    </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFORMAÇÕES -->
+
+      <div class="cartao informacoes">
+
+        <h3>
+          Minha conta
+        </h3>
+
+
+        <div class="info">
+
+                    <span class="info-label">
+                        Email
+                    </span>
+
+          <span
+                  class="info-valor"
+                  id="emailConta">
+
+                        -
+
+                    </span>
+
+        </div>
+
+
+        <div class="info">
+
+                    <span class="info-label">
+                        ID da conta
+                    </span>
+
+          <span
+                  class="info-valor"
+                  id="idConta">
+
+                        -
+
+                    </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <p id="msg" class="mensagem"></p>
-
-</div>
+</main>
 
 
 <script>
-  function mudarAba(aba){
-    const indicador = document.getElementById('indicadorAba');
-    const abaDepositar = document.getElementById('abaDepositar');
-    const abaSacar = document.getElementById('abaSacar');
-    const painelDepositar = document.getElementById('painelDepositar');
-    const painelSacar = document.getElementById('painelSacar');
 
-    document.getElementById('msg').innerText = '';
+  /*
+   * =====================================================
+   * CARREGAR CONTA DO USUÁRIO LOGADO
+   * =====================================================
+   */
 
-    if(aba === 'depositar'){
-      indicador.classList.remove('deslocado');
-      abaDepositar.classList.add('ativa');
-      abaSacar.classList.remove('ativa');
-      painelDepositar.classList.add('ativo');
-      painelSacar.classList.remove('ativo');
-    } else {
-      indicador.classList.add('deslocado');
-      abaSacar.classList.add('ativa');
-      abaDepositar.classList.remove('ativa');
-      painelSacar.classList.add('ativo');
-      painelDepositar.classList.remove('ativo');
+  async function carregarConta() {
+
+    const carregando =
+            document.getElementById('carregando');
+
+    const conteudo =
+            document.getElementById('conteudo');
+
+    const mensagemErro =
+            document.getElementById('mensagemErro');
+
+
+    try {
+
+      const resposta =
+              await fetch('/api/account/me');
+
+
+      /*
+       * Usuário não está logado
+       */
+
+      if (resposta.status === 401) {
+
+        window.location.href = 'userLogin.html';
+
+        return;
+      }
+
+
+      /*
+       * Outro erro
+       */
+
+      if (!resposta.ok) {
+
+        const texto =
+                await resposta.text();
+
+        throw new Error(texto);
+      }
+
+
+      /*
+       * Converte a resposta para JSON
+       */
+
+      const conta =
+              await resposta.json();
+
+
+      console.log('Conta recebida:', conta);
+
+
+      /*
+       * =============================================
+       * DADOS DA CONTA
+       * =============================================
+       */
+
+      const numeroConta =
+              conta.accountNumber;
+
+      const saldo =
+              conta.balance;
+
+
+      /*
+       * =============================================
+       * MOSTRA OS DADOS
+       * =============================================
+       */
+
+      document.getElementById('numeroConta')
+              .innerText = numeroConta;
+
+
+      document.getElementById('idConta')
+              .innerText = conta.id;
+
+
+      document.getElementById('saldo')
+              .innerText =
+              formatarMoeda(saldo);
+
+
+      if (conta.user) {
+
+        const email =
+                conta.user.email;
+
+        document.getElementById('emailUsuario')
+                .innerText = email;
+
+        document.getElementById('emailConta')
+                .innerText = email;
+
+
+        const nome =
+                email.split('@')[0];
+
+        document.getElementById('nomeUsuario')
+                .innerText = nome;
+      }
+
+
+      carregando.style.display = 'none';
+
+      conteudo.style.display = 'block';
+
+
+    } catch (erro) {
+
+      console.error(
+              'Erro ao carregar conta:',
+              erro
+      );
+
+
+      carregando.style.display = 'none';
+
+      mensagemErro.style.display = 'block';
+
+      mensagemErro.innerText =
+              'Não foi possível carregar sua conta. Tente novamente.';
     }
+
   }
 
-  function formatarMoeda(valor){
-    return valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function formatarMoeda(valor) {
+
+    return Number(valor).toLocaleString(
+            'pt-BR',
+            {
+              style: 'currency',
+              currency: 'BRL'
+            }
+    );
+
   }
 
-  async function atualizarSaldo() {
-    const res = await fetch('/api/conta/saldo');
-    const saldo = await res.json();
-    document.getElementById('saldo').innerText = formatarMoeda(saldo);
-  }
 
-  async function depositar() {
-    const valor = parseFloat(document.getElementById('valorDeposito').value);
-    await fetch('/api/conta/depositar', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ valor })
-    });
-    document.getElementById('valorDeposito').value = '';
-    document.getElementById('msg').innerText = '';
-    atualizarSaldo();
-  }
 
-  async function sacar() {
-    const valor = parseFloat(document.getElementById('valorSaque').value);
-    const res = await fetch('/api/conta/sacar', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ valor })
-    });
-    if (!res.ok) {
-      document.getElementById('msg').innerText = await res.text();
-    } else {
-      document.getElementById('valorSaque').value = '';
-      document.getElementById('msg').innerText = '';
-      atualizarSaldo();
+  async function logout() {
+
+    try {
+
+      const resposta =
+              await fetch(
+                      '/api/user/logout',
+                      {
+                        method: 'POST'
+                      }
+              );
+
+
+      if (resposta.ok) {
+
+        window.location.href =
+                'userLogin.html';
+
+        return;
+      }
+
+
+      alert(
+              'Não foi possível sair da conta.'
+      );
+
+
+    } catch (erro) {
+
+      console.error(
+              'Erro ao fazer logout:',
+              erro
+      );
+
+      alert(
+              'Erro ao conectar com o servidor.'
+      );
     }
+
   }
 
-  const button = document.getElementById("back");
-  button.addEventListener("click", () =>{
-    window.location.href = "userLogin.html";
-  });
-  atualizarSaldo();
+
+  carregarConta();
+
 </script>
 
 </body>
+
 </html>
+

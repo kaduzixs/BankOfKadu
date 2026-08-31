@@ -114,7 +114,7 @@ do computador, nao esta funcionando normalmente com deploy por ser um banco de m
 
 Planejado, mas ainda não presente no código:
 
-- `ContaController` — vai concentrar as operações de conta (ex.: depósito, saque, consulta de saldo).
+- `CountController` — vai concentrar as operações de conta (ex.: depósito, saque, consulta de saldo).
 - `ContaService` — lógica de negócio da conta.
 - Uma classe privada `conta`, para criar uma **conta zerada de teste**, no mesmo espírito do usuário `joao` de teste no `UserService`.
 
