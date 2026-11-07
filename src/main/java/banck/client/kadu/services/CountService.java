@@ -31,7 +31,13 @@ public class CountService {
     }
 
     public boolean sacar(Long userId, BigDecimal valor) {
-
+                // if para permitir nao depositar valores negativos
+        if (valor.compareTo(BigDecimal.ZERO) < 0) {
+            return false;
+        }
+        if(valor == null){
+            return false;
+        }
         Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
         if (valor.compareTo(conta.getBalance()) > 0) {
