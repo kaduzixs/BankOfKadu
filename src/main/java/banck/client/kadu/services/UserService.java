@@ -13,6 +13,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    private UserRepository userRepository,
+    private AccountRepository accountRepository,
+    private PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     @Autowired
     private UserRepository userRepository;
 
@@ -22,15 +29,17 @@ public class UserService {
     public boolean register(String email, String password) {
 
         if (userRepository.findByEmail(email).isPresent()) {
-            return false; // já existe
+            return false;
         }
 
-        User usuarioSalvo = userRepository.save(new User(email, password));
+        // Criptografa a senha antes de salvar
+        String senhaCriptografada = passwordEncoder.encode(password);
+
+        User usuarioSalvo = userRepository.save(new User(email, senhaCriptografada));
 
         String accountNumber = String.valueOf(usuarioSalvo.getId());
 
         Accounts conta = new Accounts(accountNumber, 0.0);
-
         conta.setUser(usuarioSalvo);
 
         accountRepository.save(conta);
@@ -39,6 +48,6 @@ public class UserService {
     }
 
     public Optional<User> login(String email, String password) {
-        return userRepository.findByEmail(email).filter(usuario -> usuario.getPassword().equals(password));
+        return userRepository.findByEmail(email).filter(usuario -> passwordEncoder.matches(password, usuario.getPassword()));
     }
 }

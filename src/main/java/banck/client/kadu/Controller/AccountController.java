@@ -24,7 +24,7 @@ public class AccountController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não está logado");
         }
 
-        Long userId = (Long) usuarioId;
+        Long userId = (Long) session.getAttribute("userId");
 
         return accountRepository.findByUserId(userId).<ResponseEntity<?>>map(conta -> ResponseEntity.ok(conta)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Conta não encontrada"));
     }
