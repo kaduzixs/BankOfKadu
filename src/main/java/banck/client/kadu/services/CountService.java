@@ -13,31 +13,31 @@ public class CountService {
         this.accountRepository = accountRepository;
     }
 
-    public double getSaldo(Long userId) {
+    public BigDecimal getSaldo(Long userId) {
 
         Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
         return conta.getBalance();
     }
 
-    public void depositar(Long userId, double valor) {
+    public void depositar(Long userId, BigDecimal valor) {
 
         Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
-        conta.setBalance(conta.getBalance() + valor);
+        conta.setBalance(conta.getBalance().add(valor));
 
         accountRepository.save(conta);
     }
 
-    public boolean sacar(Long userId, double valor) {
+    public boolean sacar(Long userId, BigDecimal valor) {
 
         Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
-        if (valor > conta.getBalance()) {
+        if (valor.compareTo(conta.getBalance()) > 0) {
             return false;
         }
 
-        conta.setBalance(conta.getBalance() - valor);
+        conta.setBalance(conta.getBalance().subtract(valor));
 
         accountRepository.save(conta);
 

@@ -14,7 +14,7 @@ public class Accounts {
     private String accountNumber;
 
     @Column(nullable = false)
-    private double balance = 0.0;
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
@@ -23,7 +23,7 @@ public class Accounts {
     public Accounts() {
     }
 
-    public Accounts(String accountNumber, double balance) {
+    public Accounts(String accountNumber, BigDecimal balance) {
         this.accountNumber = accountNumber;
         this.balance = balance;
     }

@@ -29,9 +29,7 @@ public class CountController {
     }
 
     @PostMapping("/sacar/{userId}")
-    public ResponseEntity<?> sacar(
-            @PathVariable Long userId,
-            @RequestBody ValorRequest body) {
+    public ResponseEntity<?> sacar(@PathVariable Long userId, @RequestBody ValorRequest body) {
 
         boolean ok = conta.sacar(userId, body.valor);
 
