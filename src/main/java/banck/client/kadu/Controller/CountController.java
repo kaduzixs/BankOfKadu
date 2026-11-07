@@ -4,6 +4,7 @@ import banck.client.kadu.Request.ValorRequest;
 import banck.client.kadu.services.CountService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/conta")
@@ -16,12 +17,12 @@ public class CountController {
     }
 
     @GetMapping("/saldo/{userId}")
-    public double consultarSaldo(@PathVariable Long userId) {
+    public BigDecimal consultarSaldo(@PathVariable Long userId) {
         return conta.getSaldo(userId);
     }
 
     @PostMapping("/depositar/{userId}")
-    public double depositar(@PathVariable Long userId, @RequestBody ValorRequest body) {
+    public BigDecimal depositar(@PathVariable Long userId, @RequestBody ValorRequest body) {
 
         conta.depositar(userId, body.valor);
 

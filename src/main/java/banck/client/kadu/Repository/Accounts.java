@@ -1,6 +1,7 @@
 package banck.client.kadu.Repository;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "accounts")

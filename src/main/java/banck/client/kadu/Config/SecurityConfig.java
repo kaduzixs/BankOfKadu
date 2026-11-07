@@ -1,4 +1,5 @@
-package Config;
+
+package banck.client.kadu.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
