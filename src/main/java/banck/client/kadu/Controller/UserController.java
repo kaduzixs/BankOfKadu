@@ -20,16 +20,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
-            @RequestParam String email,
-            @RequestParam String password,
-            HttpSession session) {
+    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
 
         Optional<User> usuario = userService.login(email, password);
 
         if (usuario.isPresent()) {
             // Guarda o ID do usuário na sessão
-            session.setAttribute("usuarioId", usuario.get().getId());
+            session.setAttribute("userId", usuario.get().getId());
             return ResponseEntity.ok("Login realizado com sucesso!");
         }
 
@@ -37,9 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(
-            @RequestParam String email,
-            @RequestParam String password) {
+    public ResponseEntity<String> register(@RequestParam String email, @RequestParam String password) {
 
         boolean registered = userService.register(email, password);
 

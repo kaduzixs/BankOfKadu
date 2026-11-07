@@ -31,8 +31,7 @@ public class CountService {
 
     public boolean sacar(Long userId, double valor) {
 
-        Accounts conta = accountRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Conta não encontrada"));
+        Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
         if (valor > conta.getBalance()) {
             return false;

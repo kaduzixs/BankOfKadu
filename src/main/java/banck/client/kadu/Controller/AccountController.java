@@ -18,9 +18,9 @@ public class AccountController {
 
     @GetMapping("/me")
     public ResponseEntity<?> minhaConta(HttpSession session) {
-        Object usuarioId = session.getAttribute("usuarioId");
+        Object userId = session.getAttribute("userId");
         // Usuário não está logado
-        if (usuarioId == null) {
+        if (userId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não está logado");
         }
 

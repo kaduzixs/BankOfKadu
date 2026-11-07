@@ -21,9 +21,7 @@ public class CountController {
     }
 
     @PostMapping("/depositar/{userId}")
-    public double depositar(
-            @PathVariable Long userId,
-            @RequestBody ValorRequest body) {
+    public double depositar(@PathVariable Long userId, @RequestBody ValorRequest body) {
 
         conta.depositar(userId, body.valor);
 
@@ -38,9 +36,7 @@ public class CountController {
         boolean ok = conta.sacar(userId, body.valor);
 
         if (!ok) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Saldo insuficiente");
+            return ResponseEntity.badRequest().body("Saldo insuficiente");
         }
         return ResponseEntity.ok(conta.getSaldo(userId));
     }

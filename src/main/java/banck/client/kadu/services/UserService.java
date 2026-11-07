@@ -39,7 +39,6 @@ public class UserService {
     }
 
     public Optional<User> login(String email, String password) {
-        return userRepository.findByEmail(email)
-                .filter(usuario -> usuario.getPassword().equals(password));
+        return userRepository.findByEmail(email).filter(usuario -> usuario.getPassword().equals(password));
     }
 }
