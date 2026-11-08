@@ -28,26 +28,22 @@ public class CountController {
         Object userId = session.getAttribute("userId");
 
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Usuário não está logado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não está logado");
         }
 
         return ResponseEntity.ok(conta.getSaldo((Long) userId));
     }
 
     @PostMapping("/depositar")
-    public ResponseEntity<?> depositar(
-            @RequestBody(required = false) ValorRequest body,
-            HttpSession session) {
+    public ResponseEntity<?> depositar(@Valid @RequestBody ValorRequest request, HttpSession session) {
 
         Object userId = session.getAttribute("userId");
 
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Usuário não está logado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não está logado");
         }
 
-        if (body == null || !valorValido(body.valor)) {
+        if (request == null || !valorValido(request.valor)) {
             return ResponseEntity.badRequest()
                     .body("Informe um valor maior que zero");
         }
@@ -58,15 +54,12 @@ public class CountController {
     }
 
     @PostMapping("/sacar")
-    public ResponseEntity<?> sacar(
-            @RequestBody(required = false) ValorRequest body,
-            HttpSession session) {
+    public ResponseEntity<?> sacar(@RequestBody(required = false) ValorRequest body, HttpSession session) {
 
         Object userId = session.getAttribute("userId");
 
         if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body("Usuário não está logado");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não está logado");
         }
 
         if (body == null || !valorValido(body.valor)) {

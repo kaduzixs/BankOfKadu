@@ -32,12 +32,12 @@ public class CountService {
 
     public boolean sacar(Long userId, BigDecimal valor) {
                 // if para permitir nao depositar valores negativos
-        if (valor.compareTo(BigDecimal.ZERO) < 0) {
-            return false;
-        }
-        if(valor == null){
-            return false;
-        }
+
+            if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+                return false;
+            }
+
+
         Accounts conta = accountRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Conta não encontrada"));
 
         if (valor.compareTo(conta.getBalance()) > 0) {
@@ -49,5 +49,11 @@ public class CountService {
         accountRepository.save(conta);
 
         return true;
+    }
+    private void validarValor(BigDecimal valor) {
+
+        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor deve ser maior que zero");
+        }
     }
 }

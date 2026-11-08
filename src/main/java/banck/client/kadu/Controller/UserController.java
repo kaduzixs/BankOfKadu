@@ -34,15 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
 
-        boolean registered = userService.register(email, password);
+        boolean registered = userService.register(request.email(), request.password());
 
         if (registered) {
-            return ResponseEntity.ok("Usuário cadastrado com sucesso!");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário cadastrado com sucesso!");
         }
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Email já cadastrado");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado");
     }
 
     @PostMapping("/logout")
