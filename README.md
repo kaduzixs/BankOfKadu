@@ -1,699 +1,307 @@
-# Project Documentation — Kadu Bank
+# Kadu Bank
 
-> **Status:** Project development success, but can gona have alterations for stayed better.
+> Aplicação web de simulação bancária desenvolvida com Java e Spring Boot, com foco em autenticação, persistência de dados e operações básicas de conta.
 
----
+**Status:** Em desenvolvimento — projeto educacional e de portfólio. Não utilizar para movimentações financeiras reais.
 
-# 🏦 Kadu Bank
+## Visão geral
 
-**Kadu Bank** is a banking system project developed for learning and practicing **Full Stack development**, using **Java + Spring Boot** for the back-end and **HTML, CSS, and JavaScript** for the front-end.
+O **Kadu Bank** é uma aplicação que demonstra a construção de um sistema bancário simplificado. Cada usuário cadastrado possui uma conta associada, permitindo consultar o saldo e realizar operações de depósito e saque dentro da aplicação.
 
-The system currently includes user authentication, registration, bank account management, balance checking, deposits, withdrawals, and integration between users and their bank accounts.
+O projeto evoluiu de uma implementação inicial com armazenamento em memória para uma arquitetura baseada em banco de dados relacional, com separação entre controllers, services e repositories.
 
-The application is being developed using a layered architecture, separating the responsibilities of each part of the system.
+### Funcionalidades
 
----
+- Cadastro de usuários com validação de e-mail e senha.
+- Armazenamento de senhas com hash BCrypt.
+- Login e logout utilizando sessão HTTP.
+- Criação de uma conta vinculada ao usuário no cadastro.
+- Consulta dos dados da conta autenticada e do saldo.
+- Operações de depósito e saque.
+- Persistência de usuários e contas em PostgreSQL.
+- Interface web com HTML, CSS e JavaScript.
 
-# 📋 Overview
+> **Nota:** os recursos acima representam as funcionalidades previstas e presentes na implementação. A versão atual ainda exige correções de integração antes de ser considerada pronta para execução. Consulte [Estado de desenvolvimento](#estado-de-desenvolvimento).
 
-The project currently contains the following main modules:
+## Tecnologias
 
-### 👤 User
+| Tecnologia | Utilização |
+|---|---|
+| Java 17 | Linguagem principal |
+| Spring Boot 3.3.4 | Estrutura do back-end |
+| Spring Web | Endpoints REST |
+| Spring Data JPA | Persistência e acesso aos dados |
+| Hibernate | Mapeamento objeto-relacional |
+| PostgreSQL | Banco de dados relacional |
+| Supabase | Hospedagem do PostgreSQL |
+| BCrypt | Hash de senhas |
+| Jakarta Validation | Validação de dados |
+| Maven | Dependências e build |
+| HTML5, CSS3 e JavaScript | Interface e comunicação com a API |
 
-Responsible for managing users.
+## Arquitetura
 
-Features:
-
-* User registration
-* Login
-* Username and password validation
-* Identification of the logged-in user
-* Integration with the bank account
-* Logout
-
-**Status:** ✅ Implemented
-
----
-
-### 🏦 Account
-
-Responsible for managing bank accounts.
-
-Features:
-
-* Account creation
-* Account lookup
-* Balance lookup
-* Account identification
-* Deposits
-* Withdrawals
-* User-account integration
-
-**Status:** ✅ Implemented
-
----
-
-# 🏗️ Project Architecture
-
-The application follows a layered architecture:
+A aplicação utiliza uma arquitetura em camadas para separar responsabilidades e facilitar a manutenção.
 
 ```text
-Front-end
-   ↓
-Controller
-   ↓
-Service
-   ↓
-Repository
-   ↓
-MySQL
+Navegador
+   |
+   | HTTP / Fetch API
+   v
+Controllers
+   |
+   v
+Services
+   |
+   v
+Repositories
+   |
+   v
+PostgreSQL (Supabase)
 ```
 
-Each layer has a specific responsibility.
+- **Controller:** recebe requisições HTTP, verifica dados de entrada e devolve respostas.
+- **Service:** concentra regras de negócio, como cadastro e movimentação do saldo.
+- **Repository:** realiza operações de persistência por meio do Spring Data JPA.
+- **Entity/Model:** representa as estruturas persistidas no banco.
+- **DTO/Request:** define os dados recebidos ou expostos pela API.
 
----
-
-## Front-end
-
-The front-end is responsible for the visual interface and user interaction.
-
-Technologies used:
-
-* HTML5
-* CSS3
-* JavaScript
-
-JavaScript communicates with the back-end API using the `fetch()` API.
-
----
-
-## Controller
-
-The Controller receives HTTP requests from the front-end.
-
-Examples:
+## Estrutura do projeto
 
 ```text
-POST /api/user/login
-POST /api/user/register
-POST /api/conta/depositar/{id}
-POST /api/conta/sacar/{id}
-GET  /api/account/me
+BankOfKadu/
+├── src/
+│   └── main/
+│       ├── java/banck/client/kadu/
+│       │   ├── Config/
+│       │   │   └── SecurityConfig.java
+│       │   ├── Controller/
+│       │   │   ├── AccountController.java
+│       │   │   ├── CountController.java
+│       │   │   └── UserController.java
+│       │   ├── DTO/
+│       │   │   ├── AccountResponse.java
+│       │   │   └── RegisterRequest.java
+│       │   ├── Repository/
+│       │   │   ├── AccountRepository.java
+│       │   │   ├── Accounts.java
+│       │   │   ├── User.java
+│       │   │   └── UserRepository.java
+│       │   ├── Request/
+│       │   │   └── ValorRequest.java
+│       │   ├── services/
+│       │   │   ├── CountService.java
+│       │   │   └── UserService.java
+│       │   └── KaduApplication.java
+│       └── resources/
+│           ├── application.yml
+│           └── static/
+│               ├── index.html
+│               ├── user.css
+│               └── userLogin.html
+├── pom.xml
+└── README.md
 ```
 
-The Controller should not contain all the business logic. Its main responsibility is to receive the request and forward the necessary information to the Service layer.
+## Banco de dados
 
----
+O projeto utiliza **PostgreSQL**, hospedado no Supabase. As credenciais são obtidas por variáveis de ambiente, evitando armazenar usuário e senha do banco diretamente no código versionado.
 
-## Service
+### Modelo de dados
 
-The Service layer contains the business logic of the application.
+A implementação possui duas entidades centrais:
 
-Examples:
+**User**
+- Identificador do usuário.
+- E-mail.
+- Senha armazenada em formato de hash.
 
-* Checking whether a user exists
-* Validating login credentials
-* Creating users
-* Creating accounts
-* Processing deposits
-* Checking the balance before withdrawals
-* Updating the account balance
+**Accounts**
+- Identificador da conta.
+- Número da conta.
+- Saldo.
+- Referência ao usuário proprietário.
 
----
+A relação entre usuário e conta é de um para um (`OneToOne`). A coluna `user_id` é obrigatória e única.
 
-## Repository
+## Configuração e execução
 
-The Repository layer is responsible for communication between the application and the database.
+### Pré-requisitos
 
-The project uses **Spring Data JPA**, allowing users and accounts to be stored and retrieved from the database.
+- JDK 17 ou superior.
+- Maven.
+- Instância PostgreSQL acessível pela aplicação.
+- Credenciais de conexão com o banco.
 
----
+### 1. Clonar o repositório
 
-# 🗄️ Database
-
-The project currently uses:
-
-**MySQL**
-
-The database was created on a local machine for development purposes.
-
-The database contains tables responsible for storing information about users and bank accounts.
-
-Unlike the first version of the project, which used a `HashMap` to temporarily store users, the current version uses persistent database storage.
-
-This means that data is not automatically lost when the application is restarted.
-
----
-
-# 📁 Project Structure
-
-The project can be organized approximately as follows:
-
-```text
-src/
-└── main/
-    ├── java/
-    │   └── banck/
-    │       └── client/
-    │           └── kadu/
-    │               ├── Controller/
-    │               │   ├── UserController.java
-    │               │   └── CountController.java
-    │               │
-    │               ├── services/
-    │               │   ├── UserService.java
-    │               │   └── CountService.java
-    │               │
-    │               ├── Repository/
-    │               │   └── User.java
-    │               │
-    │               └── Request/
-    │                   └── ValorRequest.java
-    │
-    └── resources/
-        ├── userLogin.html
-        ├── user.css
-        └── index.html
+```bash
+git clone https://github.com/kaduzixs/BankOfKadu.git
+cd BankOfKadu
 ```
 
-> The structure may change as new classes and features are added to the project.
+### 2. Configurar as variáveis de ambiente
 
----
+A aplicação espera as variáveis:
 
-# 👤 User Module
+| Variável | Descrição |
+|---|---|
+| `DATABASE_USERNAME` | Usuário do PostgreSQL |
+| `DATABASE_PASSWORD` | Senha do PostgreSQL |
 
-The `User` module is responsible for user registration and authentication.
+Exemplo para uma sessão de terminal Linux:
 
-In the early version of the project, users were stored inside a `HashMap` in the `UserService`.
-
-The project has since evolved to use **MySQL**, allowing user data to remain stored even after the application is stopped.
-
----
-
-# 📝 User Registration
-
-The user provides:
-
-* Username
-* Password
-* Password confirmation
-
-The front-end performs basic validation before sending the information to the API.
-
-Examples of validations:
-
-* Required fields
-* Minimum password length
-* Password confirmation
-* Checking whether the username is already registered
-
-The request is sent to:
-
-```text
-POST /api/user/register
+```bash
+export DATABASE_USERNAME="seu_usuario"
+export DATABASE_PASSWORD="sua_senha"
 ```
 
----
+Configure esses valores no ambiente em que a aplicação será executada. Não publique credenciais reais no repositório.
 
-# 🔐 Login
+A URL JDBC definida em `src/main/resources/application.yml` aponta atualmente para o PostgreSQL do projeto no Supabase. Para utilizar outro banco, ajuste a URL conforme o ambiente.
 
-To access the system, the user provides their login credentials.
+### 3. Executar a aplicação
 
-The front-end sends a request to:
-
-```text
-POST /api/user/login
+```bash
+./mvnw spring-boot:run
 ```
 
-The login data is sent using:
+Se o repositório não possuir Maven Wrapper, utilize:
 
-```text
-application/x-www-form-urlencoded
+```bash
+mvn spring-boot:run
 ```
 
-After successful authentication, the user can access the main bank dashboard.
+A aplicação utiliza a porta padrão **8080**, salvo configuração diferente.
 
----
+> A execução depende da correção dos pontos indicados em [Estado de desenvolvimento](#estado-de-desenvolvimento).
 
-# 🔒 Authentication
+## API
 
-The system has access control to prevent unauthorized users from accessing account information.
+Endpoints identificados nos controllers atuais:
 
-When the main page is loaded, the front-end communicates with the API to identify the currently authenticated user and retrieve their account information.
+| Método | Endpoint | Descrição |
+|---|---|---|
+| `POST` | `/api/user/register` | Cadastra um usuário |
+| `POST` | `/api/user/login` | Autentica o usuário |
+| `POST` | `/api/user/logout` | Encerra a sessão |
+| `GET` | `/api/account/me` | Retorna os dados da conta da sessão atual |
+| `GET` | `/api/conta/saldo` | Consulta o saldo do usuário autenticado |
+| `POST` | `/api/conta/depositar` | Realiza um depósito |
+| `POST` | `/api/conta/sacar` | Realiza um saque |
 
-If the server returns:
+### Exemplos de requisição
 
-```text
-401 Unauthorized
-```
+**Cadastro — `POST /api/user/register`**
 
-the user is redirected to:
-
-```text
-userLogin.html
-```
-
----
-
-# 🏦 Account Module
-
-The `Account` module is responsible for bank account operations.
-
-Each account is associated with a registered user.
-
-An account contains information such as:
-
-* Account ID
-* Account number
-* Account balance
-* Account owner
-
----
-
-# 💰 Account Balance
-
-The account balance is stored in the MySQL database.
-
-When the user accesses the dashboard, the front-end requests the account information from the API.
-
-The page displays:
-
-```text
-AVAILABLE BALANCE
-
-R$ 0.00
-```
-
-The JavaScript code formats the value according to the Brazilian currency format.
-
-For example:
-
-```text
-R$ 1,250.50
-```
-
----
-
-# ➕ Deposit
-
-Users can make deposits using the:
-
-```text
-Deposit
-```
-
-button.
-
-A modal window opens and asks the user to enter the amount.
-
-The front-end sends the request to:
-
-```text
-POST /api/conta/depositar/{userId}
-```
-
-The amount is sent as JSON:
+O cadastro recebe JSON:
 
 ```json
 {
-    "valor": 100
+  "email": "usuario@exemplo.com",
+  "password": "senha-forte"
 }
 ```
 
-The back-end processes the operation and updates the account balance.
+A implementação utiliza um DTO com validação de e-mail e tamanho da senha.
 
-After the deposit is completed, the new balance is automatically displayed on the page.
+**Login — `POST /api/user/login`**
 
----
+O login recebe `email` e `password` como parâmetros de formulário (`application/x-www-form-urlencoded`). Após a autenticação, o identificador do usuário é armazenado na sessão HTTP.
 
-# ➖ Withdrawal
+**Depósito — `POST /api/conta/depositar`**
 
-Users can also withdraw money using the:
+**Saque — `POST /api/conta/sacar`**
 
-```text
-Withdraw
+As operações recebem JSON com o campo `valor`:
+
+```json
+{
+  "valor": 100.00
+}
 ```
 
-button.
+Os endpoints de conta utilizam a sessão autenticada para identificar o proprietário. O cliente não deve escolher o ID de outro usuário para consultar ou movimentar uma conta.
 
-A modal window asks the user to enter the desired amount.
+### Respostas HTTP
 
-The request is sent to:
+- **200 OK:** operação ou consulta concluída.
+- **201 Created:** cadastro realizado.
+- **400 Bad Request:** dados inválidos ou operação não permitida.
+- **401 Unauthorized:** sessão ausente ou credenciais inválidas.
+- **404 Not Found:** conta não encontrada.
+- **409 Conflict:** e-mail já cadastrado.
 
-```text
-POST /api/conta/sacar/{userId}
-```
+As respostas exatas podem variar conforme o endpoint e o tratamento de erros.
 
-The back-end processes the withdrawal and updates the balance.
+## Segurança e integridade
 
-If the operation cannot be completed, an error message is displayed to the user.
+O projeto já contém algumas medidas importantes para um sistema de estudo:
 
----
+- **Hash de senha com BCrypt:** a senha não é armazenada diretamente em texto puro.
+- **Sessão HTTP:** o servidor mantém o identificador do usuário autenticado na sessão.
+- **Separação por usuário:** a consulta da conta utiliza o ID associado à sessão, em vez de confiar em um ID enviado livremente pelo cliente.
+- **Validação de entrada:** existem DTOs com anotações de validação para cadastro e valores monetários.
+- **Credenciais externas ao código:** usuário e senha do banco são obtidos por variáveis de ambiente.
+- **Precisão monetária:** saldos e valores utilizam `BigDecimal`, evitando problemas de precisão comuns em cálculos com `double`.
 
-# 🔄 Banking Operation Flow
+### Limitações de segurança
 
-The basic flow of a deposit or withdrawal is:
+O projeto **não é um sistema bancário de produção**. Antes de qualquer uso real, seriam necessárias, entre outras medidas:
 
-```text
-User
-   ↓
-Clicks "Deposit" or "Withdraw"
-   ↓
-Front-end opens the modal
-   ↓
-User enters the amount
-   ↓
-JavaScript sends HTTP request
-   ↓
-CountController
-   ↓
-CountService
-   ↓
-Repository
-   ↓
-MySQL
-   ↓
-Account balance is updated
-   ↓
-API returns the new balance
-   ↓
-Front-end updates the screen
-```
+- Proteção contra CSRF e endurecimento dos cookies de sessão.
+- Renovação do identificador da sessão após o login e políticas de expiração.
+- HTTPS obrigatório em ambiente publicado.
+- Controle de tentativas de login e proteção contra abuso.
+- Tratamento centralizado e seguro de exceções.
+- Garantias transacionais e controle de concorrência nas movimentações.
+- Auditoria e histórico das operações.
+- Testes automatizados de autenticação, autorização e regras financeiras.
+- Revisão de segurança independente.
 
----
+O uso de BCrypt e sessões, isoladamente, não equivale à implementação completa do Spring Security nem garante segurança de nível bancário.
 
-# 🖥️ Main Dashboard
+## Interface
 
-The `index.html` page works as the main dashboard of the user's bank account.
+O front-end está localizado em `src/main/resources/static` e utiliza:
 
-It displays several sections.
+- **HTML5** para estrutura das páginas.
+- **CSS3** para identidade visual e responsividade.
+- **JavaScript** para interação e comunicação com os endpoints por meio de Fetch API.
 
-## Header
+As páginas principais são `userLogin.html` para acesso e `index.html` para o painel da conta.
 
-The header contains:
+## Estado de desenvolvimento
 
-* Kadu Bank logo
-* Logged-in user's email
-* Logout button
+O projeto está em evolução. Esta documentação descreve a arquitetura e as funcionalidades identificadas nos arquivos do repositório, mas a versão atual ainda precisa de uma revisão de integração antes de ser considerada pronta para execução.
 
----
+Pontos identificados no código que precisam ser corrigidos ou verificados:
 
-## Welcome Section
+- O record `ValorRequest` precisa ter sua declaração corrigida para compilar.
+- O `CountController` mistura nomes de variáveis e acessos ao record; deve utilizar os acessores corretos e aplicar `@Valid` de forma consistente.
+- O `UserController` precisa importar `RegisterRequest` e as anotações de validação utilizadas.
+- As operações de depósito e saque devem validar os valores também na camada de serviço, não apenas no controller.
+- É recomendável revisar o tratamento de exceções e adicionar testes automatizados.
 
-The dashboard displays a personalized welcome message:
+Esses itens são apresentados para manter a documentação fiel ao estado atual do código, e não como funcionalidades já concluídas.
 
-```text
-Hello, user!
+## Próximas melhorias
 
-Welcome to Kadu Bank.
-```
+- Corrigir e validar o fluxo completo de cadastro, login e operações de conta.
+- Criar testes unitários e de integração.
+- Implementar histórico de transações.
+- Adicionar transferências entre contas.
+- Reforçar o gerenciamento de sessão e a proteção CSRF.
+- Implementar controle de concorrência para operações simultâneas.
+- Melhorar o tratamento padronizado de erros.
+- Preparar configurações específicas para desenvolvimento e produção.
+- Documentar a API com OpenAPI/Swagger.
+- Automatizar build e testes com CI.
 
-The displayed name is currently generated from the user's email address.
+## Objetivo do projeto
 
----
-
-## Account Card
-
-The account card displays:
-
-* Available balance
-* Account number
-* Deposit button
-* Withdrawal button
+O Kadu Bank é um projeto de aprendizado e portfólio voltado à prática de desenvolvimento back-end com Java e Spring Boot. Ele permite demonstrar conceitos como APIs REST, arquitetura em camadas, persistência relacional, autenticação baseada em sessão, hash de senhas, validação de dados e regras de negócio envolvendo valores monetários.
 
 ---
 
-## Account Information
-
-The information section displays:
-
-* Email
-* Account ID
-* User ID
-
----
-
-# 🚪 Logout
-
-The user can leave their account using the:
-
-```text
-Logout
-```
-
-button.
-
-The front-end sends a request to:
-
-```text
-POST /api/user/logout
-```
-
-After a successful logout, the user is redirected to:
-
-```text
-userLogin.html
-```
-
----
-
-# 🎨 User Interface
-
-The Kadu Bank project has its own visual identity.
-
-The interface uses:
-
-* Dark background
-* Dark gray surfaces
-* Green as the primary color
-* Red for error messages
-* `Inter` font
-* `Space Grotesk` font
-* Rounded cards
-* Gradients
-* Hover effects
-* Lightweight animations
-
-The main green color is:
-
-```css
---verde: #37C871;
-```
-
-A darker version can also be used for gradients:
-
-```css
---verde-escuro: #229954;
-```
-
-Green is primarily used for:
-
-* Logo
-* Main buttons
-* Active tabs
-* Input focus
-* Deposit buttons
-* Confirmation buttons
-* Success messages
-* Highlight elements
-
----
-
-# 📱 Responsive Design
-
-The front-end supports different screen sizes.
-
-CSS media queries are used to adapt the interface to smaller devices.
-
-Examples:
-
-```css
-@media (max-width: 700px)
-```
-
-and:
-
-```css
-@media (max-width: 440px)
-```
-
-On smaller screens:
-
-* The information grid becomes a single column
-* The user's email can be hidden from the header
-* Buttons are reorganized
-* Text sizes are reduced
-* Cards receive smaller spacing
-
----
-
-# 🗄️ Local Database
-
-The current MySQL database is configured on a local development machine.
-
-This means that the application currently depends on the machine where the database is running.
-
-For production or deployment, the database configuration will need to be changed to use a database server accessible by the deployed application.
-
----
-
-# 🔄 Possible PostgreSQL Migration
-
-One possible future improvement is migrating from **MySQL** to **PostgreSQL**.
-
-The use of **Spring Data JPA** makes this migration easier because much of the database communication is abstracted by JPA and Hibernate.
-
-The configuration would need to be changed, especially:
-
-* Database dependency
-* Database URL
-* Username
-* Password
-* Spring database configuration
-* Any database-specific SQL
-
-The entity structure can remain mostly the same, depending on the implementation.
-
----
-
-# 🔌 Main API Endpoints
-
-The main endpoints currently used by the project include:
-
-| Method | Route                           | Description                            |
-| ------ | ------------------------------- | -------------------------------------- |
-| `POST` | `/api/user/login`               | Logs the user into the system          |
-| `POST` | `/api/user/register`            | Registers a new user                   |
-| `POST` | `/api/user/logout`              | Logs the user out                      |
-| `GET`  | `/api/account/me`               | Retrieves the logged-in user's account |
-| `POST` | `/api/conta/depositar/{userId}` | Makes a deposit                        |
-| `POST` | `/api/conta/sacar/{userId}`     | Makes a withdrawal                     |
-
-> Endpoints may change as the back-end architecture continues to evolve.
-
----
-
-# 🔗 Front-end → Back-end Communication
-
-The front-end uses JavaScript's `fetch()` API to communicate with the back-end.
-
-For example:
-
-```javascript
-const response = await fetch('/api/account/me');
-```
-
-For operations that modify data:
-
-```javascript
-const response = await fetch(
-    `/api/conta/depositar/${userId}`,
-    {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            valor: valor
-        })
-    }
-);
-```
-
-The API processes the request and returns the result to the browser.
-
----
-
-# 📊 Current Project Status
-
-| Feature                     | Status                 |
-| --------------------------- | ---------------------- |
-| Login interface             | ✅ Implemented          |
-| User registration           | ✅ Implemented          |
-| Login                       | ✅ Implemented          |
-| Logout                      | ✅ Implemented          |
-| MySQL                       | ✅ Implemented          |
-| User persistence            | ✅ Implemented          |
-| Bank account                | ✅ Implemented          |
-| Account lookup              | ✅ Implemented          |
-| Balance lookup              | ✅ Implemented          |
-| Deposit                     | ✅ Implemented          |
-| Withdrawal                  | ✅ Implemented          |
-| Front-end + API integration | ✅ Implemented          |
-| Responsive interface        | ✅ Implemented          |
-| PostgreSQL                  | ⏳ Possible improvement |
-| Production database         | ⏳ Future               |
-| Production deployment       | ⏳ Future               |
-
----
-
-# 🚀 Future Improvements
-
-The project is still under development and can receive several improvements.
-
-Possible future features include:
-
-* Improve authentication
-* Improve session management
-* Implement transaction history
-* Implement transfers between accounts
-* Add a simulated PIX system for educational purposes
-* Add different account types
-* Add more complete input validation
-* Improve error handling
-* Add automated tests
-* Improve credential security
-* Configure the database for production
-* Deploy the back-end
-* Use an external database server
-* Evaluate migration from MySQL to PostgreSQL
-* Create complete API documentation
-
----
-
-# ⚠️ Security Notice
-
-Kadu Bank is currently an educational and development project.
-
-Some parts of the system still require additional security improvements before the application could be considered suitable for a real-world banking environment.
-
-Areas that require attention include:
-
-* Secure password storage
-* Authentication
-* Session management
-* Authorization
-* Input validation
-* Route protection
-* Database credential protection
-* Protection against unauthorized requests
-
-**This project must not be used for real banking transactions.**
-
----
-
-# 📌 Conclusion
-
-Kadu Bank started as a simple project using a `HashMap` to store users and has evolved into an application using **Spring Boot, JPA, MySQL, HTML, CSS, and JavaScript**.
-
-The current system allows users to:
-
-```text
-Register
-   ↓
-Login
-   ↓
-Access their account
-   ↓
-Check their balance
-   ↓
-Make deposits
-   ↓
-Make withdrawals
-   ↓
-Update their balance
-   ↓
-Logout
-```
-
-The project is still under development, but its current architecture provides a solid foundation for adding new banking features without having to rebuild the entire application.
+**Repositório:** https://github.com/kaduzixs/BankOfKadu
