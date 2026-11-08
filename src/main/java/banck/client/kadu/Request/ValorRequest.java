@@ -11,6 +11,6 @@ public record ValorRequest(
 
         @DecimalMin(value = "0.01", message = "O valor deve ser maior que zero")
 
-        BigDecimal valor;
+        BigDecimal valor
 
 ) {}

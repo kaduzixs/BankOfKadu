@@ -15,6 +15,10 @@ public interface AccountRepository
     Optional<Accounts> findByUserId(Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("""SELECT a FROM Accounts a WHERE a.user.id = :userId """)
+    @Query("""
+        SELECT a
+         FROM Accounts a 
+         WHERE a.user.id = :userId
+         """)
     Optional<Accounts> findByUserIdForUpdate(@Param("userId") Long userId);
 }

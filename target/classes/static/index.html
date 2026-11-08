@@ -627,7 +627,9 @@
         const mensagemErro = document.getElementById('mensagemErro');
 
         try {
-            const resposta = await fetch('/api/account/me');
+            const resposta = await fetch('/api/account/me', {
+                credentials: 'include'
+            });
 
             if (resposta.status === 401) {
                 window.location.href = 'userLogin.html';
@@ -654,11 +656,8 @@
             if (conta.user) {
                 const email = conta.user.email ?? '-';
 
-                document.getElementById('emailUsuario').innerText =
-                    email;
-
-                document.getElementById('emailConta').innerText =
-                    email;
+                document.getElementById('emailUsuario').innerText = email;
+                document.getElementById('emailConta').innerText = email;
 
                 document.getElementById('idUsuario').innerText =
                     conta.user.id ?? '-';
@@ -682,13 +681,10 @@
     }
 
     function formatarMoeda(valor) {
-        return Number(valor || 0).toLocaleString(
-            'pt-BR',
-            {
-                style: 'currency',
-                currency: 'BRL'
-            }
-        );
+        return Number(valor || 0).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
     }
 
     function abrirModal(tipo) {
@@ -722,10 +718,7 @@
     }
 
     function fecharModal() {
-        document
-            .getElementById('modal')
-            .classList.remove('ativo');
-
+        document.getElementById('modal').classList.remove('ativo');
         operacaoAtual = null;
     }
 
@@ -741,40 +734,37 @@
             return;
         }
 
-        if (
-            !contaAtual ||
-            !contaAtual.user ||
-            !contaAtual.user.id
-        ) {
+        if (!contaAtual) {
             mensagem.className = 'mensagem';
             mensagem.innerText =
-                'Não foi possível identificar o usuário.';
+                'Não foi possível carregar os dados da conta.';
             return;
         }
 
-        const userId = contaAtual.user.id;
-
         const endpoint =
             operacaoAtual === 'depositar'
-                ? `/api/conta/depositar/${userId}`
-                : `/api/conta/sacar/${userId}`;
+                ? '/api/conta/depositar'
+                : '/api/conta/sacar';
 
         try {
             mensagem.className = 'mensagem';
             mensagem.innerText = 'Processando...';
 
-            const resposta = await fetch(
-                endpoint,
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        valor: valor
-                    })
-                }
-            );
+            const resposta = await fetch(endpoint, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    valor: valor
+                })
+            });
+
+            if (resposta.status === 401) {
+                window.location.href = 'userLogin.html';
+                return;
+            }
 
             if (!resposta.ok) {
                 const erro = await resposta.text();
@@ -793,8 +783,7 @@
             document.getElementById('saldo').innerText =
                 formatarMoeda(novoSaldo);
 
-            mensagem.className =
-                'mensagem mensagem-sucesso';
+            mensagem.className = 'mensagem mensagem-sucesso';
 
             mensagem.innerText =
                 operacaoAtual === 'depositar'
@@ -812,50 +801,39 @@
         }
     }
 
-    document
-        .getElementById('modal')
-        .addEventListener('click', function (event) {
-            if (event.target === this) {
-                fecharModal();
-            }
-        });
+    document.getElementById('modal').addEventListener('click', function (event) {
+        if (event.target === this) {
+            fecharModal();
+        }
+    });
 
-    document
-        .getElementById('valorOperacao')
-        .addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                realizarOperacao();
-            }
+    document.getElementById('valorOperacao').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            realizarOperacao();
+        }
 
-            if (event.key === 'Escape') {
-                fecharModal();
-            }
-        });
+        if (event.key === 'Escape') {
+            fecharModal();
+        }
+    });
 
     async function logout() {
         try {
-            const resposta = await fetch(
-                '/api/user/logout',
-                {
-                    method: 'POST'
-                }
-            );
+            const resposta = await fetch('/api/user/logout', {
+                method: 'POST',
+                credentials: 'include'
+            });
 
             if (resposta.ok) {
                 window.location.href = 'userLogin.html';
                 return;
             }
 
-            alert(
-                'Não foi possível sair da conta.'
-            );
+            alert('Não foi possível sair da conta.');
 
         } catch (erro) {
             console.error(erro);
-
-            alert(
-                'Erro ao conectar com o servidor.'
-            );
+            alert('Erro ao conectar com o servidor.');
         }
     }
 
