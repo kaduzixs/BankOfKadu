@@ -1,9 +1,12 @@
+
 package banck.client.kadu.Controller;
 
 import banck.client.kadu.Repository.User;
 import banck.client.kadu.services.UserService;
+import banck.client.kadu.DTO.RegisterRequest;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +19,11 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password, HttpSession session) {
@@ -25,8 +31,9 @@ public class UserController {
         Optional<User> usuario = userService.login(email, password);
 
         if (usuario.isPresent()) {
-            // Guarda o ID do usuário na sessão
+
             session.setAttribute("userId", usuario.get().getId());
+
             return ResponseEntity.ok("Login realizado com sucesso!");
         }
 
@@ -34,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
 
         boolean registered = userService.register(request.email(), request.password());
 
@@ -47,6 +54,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
+
         session.invalidate();
 
         return ResponseEntity.ok("Logout realizado com sucesso!");
